@@ -45,8 +45,8 @@ ip6tables -I UBIOS_WAN_IN_USER 15 -p tcp --dport 587 -d 2001:470:c0b5:5::2 -j RE
 ip6tables -I UBIOS_WAN_IN_USER 16 -p tcp --dport 993 -d 2001:470:c0b5:5::2 -j RETURN # IMAPS
 
 # IRC/MOSH server rules
-ip6tables -I UBIOS_WAN_IN_USER 17 -p tcp --dport 2222 -d 2001:470:c0b5:5::2 -j RETURN # SSH
-ip6tables -I UBIOS_WAN_IN_USER 18 -p udp --dport 60000:61000 -d 2001:470:c0b5:5::2 -j RETURN  # MOSH
+ip6tables -I UBIOS_WAN_IN_USER 17 -p tcp --dport 2222 -d 2001:470:c0b5:5::4 -j RETURN # SSH
+ip6tables -I UBIOS_WAN_IN_USER 18 -p udp --dport 60000:61000 -d 2001:470:c0b5:5::4 -j RETURN  # MOSH
 
 # Drop invalid packets
 ip6tables -I UBIOS_WAN_IN_USER 19 -m state --state INVALID -j DROP
