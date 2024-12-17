@@ -5,6 +5,19 @@ REMOTE_ENDPOINT=184.105.253.14
 LOCAL_IPV6=2001:470:1f10:148::2/64
 LOCAL_ENDPOINT=`/sbin/ip route get $REMOTE_ENDPOINT | awk -F"src " 'NR==1{split($2,a," ");print a[1]}'`
 
+# Check if ip6tables is available
+if ! command -v ip6tables >/dev/null 2>&1; then
+    echo "Error: ip6tables not found. Please install ip6tables."
+    exit 1
+fi
+
+# Create chain if it doesn't exist
+ip6tables -N UBIOS_WAN_IN_USER 2>/dev/null || true
+
+# Flush existing rules
+echo "Cleaning up existing configuration..."
+ip6tables -F UBIOS_WAN_IN_USER 2>/dev/null || true
+
 # Clean up existing configuration...
 echo "Cleaning up existing configuration..."
 ip link set he-ipv6 down 2>/dev/null
