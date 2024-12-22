@@ -61,12 +61,22 @@ ip6tables -I UBIOS_WAN_IN_USER 16 -p tcp --dport 993 -d 2001:470:c0b5:5::2 -j RE
 ip6tables -I UBIOS_WAN_IN_USER 17 -p tcp --dport 2222 -d 2001:470:c0b5:5::4 -j RETURN # SSH
 ip6tables -I UBIOS_WAN_IN_USER 18 -p udp --dport 60000:61000 -d 2001:470:c0b5:5::4 -j RETURN  # MOSH
 
+ip6tables -I UBIOS_WAN_IN_USER 19 -p tcp --dport 25 -d 2001:470:c0b5:6::2 -j RETURN
+
 # Drop invalid packets
-ip6tables -I UBIOS_WAN_IN_USER 19 -m state --state INVALID -j DROP
+ip6tables -I UBIOS_WAN_IN_USER 20 -m state --state INVALID -j DROP
 
 # Log and drop everything else
 ip6tables -A UBIOS_WAN_IN_USER -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "IPv6_DENIED: " --log-level 7
 ip6tables -A UBIOS_WAN_IN_USER -j DROP
+
+# Create and flush chain if needed
+ip6tables -N UBIOS_LAN_FORWARD_USER 2>/dev/null || true
+ip6tables -F UBIOS_LAN_FORWARD_USER
+
+# Allow K8s service network
+ip6tables -I UBIOS_LAN_FORWARD_USER 1 -d 2001:470:c0b5:5::/64 -j RETURN
+ip6tables -I UBIOS_LAN_FORWARD_USER 2 -s 2001:470:c0b5:5::/64 -j RETURN
 
 # Create and configure tunnel interface
 echo "Setting up tunnel interface..."
