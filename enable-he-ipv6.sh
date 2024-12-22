@@ -42,29 +42,17 @@ ip6tables -I UBIOS_WAN_IN_USER 5 -p tcp --dport 80 -d 2001:470:c0b5:5::1 -j RETU
 ip6tables -I UBIOS_WAN_IN_USER 6 -p tcp --dport 443 -d 2001:470:c0b5:5::1 -j RETURN # kratos HTTPS
 
 # Mail server rules
-ip6tables -I UBIOS_WAN_IN_USER 7 -p tcp --dport 25 -d 2001:470:c0b5:4:8a8:c150:1491:190d -j RETURN   # SMTP
-ip6tables -I UBIOS_WAN_IN_USER 8 -p tcp --dport 465 -d 2001:470:c0b5:4:8a8:c150:1491:190d -j RETURN # SMTPS
-ip6tables -I UBIOS_WAN_IN_USER 9 -p tcp --dport 587 -d 2001:470:c0b5:4:8a8:c150:1491:190d -j RETURN # Submission
-ip6tables -I UBIOS_WAN_IN_USER 10 -p tcp --dport 993 -d 2001:470:c0b5:4:8a8:c150:1491:190d -j RETURN # IMAPS
-
-# DUSK Network rules
-ip6tables -I UBIOS_WAN_IN_USER 11 -p tcp --dport 8080 -d 2001:470:c0b5:5::5 -j RETURN  # DUSK API
-ip6tables -I UBIOS_WAN_IN_USER 12 -p udp --dport 9000 -d 2001:470:c0b5:5::5 -j RETURN  # DUSK P2P
-
-# Mail server rules
-ip6tables -I UBIOS_WAN_IN_USER 13 -p tcp --dport 25 -d 2001:470:c0b5:5::2 -j RETURN   # SMTP
-ip6tables -I UBIOS_WAN_IN_USER 14 -p tcp --dport 465 -d 2001:470:c0b5:5::2 -j RETURN # SMTPS
-ip6tables -I UBIOS_WAN_IN_USER 15 -p tcp --dport 587 -d 2001:470:c0b5:5::2 -j RETURN # Submission
-ip6tables -I UBIOS_WAN_IN_USER 16 -p tcp --dport 993 -d 2001:470:c0b5:5::2 -j RETURN # IMAPS
+ip6tables -I UBIOS_WAN_IN_USER 7 -p tcp --dport 25 -d 2001:470:c0b5:6::2 -j RETURN   # SMTP
+ip6tables -I UBIOS_WAN_IN_USER 8 -p tcp --dport 465 -d 2001:470:c0b5:6::2 -j RETURN # SMTPS
+ip6tables -I UBIOS_WAN_IN_USER 9 -p tcp --dport 587 -d 2001:470:c0b5:6::2 -j RETURN # Submission
+ip6tables -I UBIOS_WAN_IN_USER 10 -p tcp --dport 993 -d 2001:470:c0b5:6::2 -j RETURN # IMAPS
 
 # IRC/MOSH server rules
-ip6tables -I UBIOS_WAN_IN_USER 17 -p tcp --dport 2222 -d 2001:470:c0b5:5::4 -j RETURN # SSH
-ip6tables -I UBIOS_WAN_IN_USER 18 -p udp --dport 60000:61000 -d 2001:470:c0b5:5::4 -j RETURN  # MOSH
-
-ip6tables -I UBIOS_WAN_IN_USER 19 -p tcp --dport 25 -d 2001:470:c0b5:6::2 -j RETURN
+ip6tables -I UBIOS_WAN_IN_USER 11 -p tcp --dport 2222 -d 2001:470:c0b5:5::4 -j RETURN # SSH
+ip6tables -I UBIOS_WAN_IN_USER 12 -p udp --dport 60000:61000 -d 2001:470:c0b5:5::4 -j RETURN  # MOSH
 
 # Drop invalid packets
-ip6tables -I UBIOS_WAN_IN_USER 20 -m state --state INVALID -j DROP
+ip6tables -I UBIOS_WAN_IN_USER 13 -m state --state INVALID -j DROP
 
 # Log and drop everything else
 ip6tables -A UBIOS_WAN_IN_USER -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "IPv6_DENIED: " --log-level 7
